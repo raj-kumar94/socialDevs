@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import registerUser from '../../actions/authActions';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 class Register extends Component {
     state = {
@@ -16,6 +16,19 @@ class Register extends Component {
     // binding this to methods
     onChangeHandler = this.onChangeHandler.bind(this);
     onSubmit = this.onSubmit.bind(this);
+
+    // lifecycle method
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.errors) {
+            this.setState({
+                errors: nextProps.errors
+            });
+        }
+    }
+    // we could also do istead of using componentWillReceiveProps method
+    // const {errors} = this.props.erros;
+
+
 
     // defining methods
     onChangeHandler(e) {
@@ -34,21 +47,16 @@ class Register extends Component {
             password2: this.state.password2
         }
         console.log(newUser);
-        // axios.post('/api/users/register', newUser)
-        //     .then(result => console.log(result.data))
-        //     .catch(err => this.setState({errors: err.response.data}));
 
         // registerUser action was mapped by connect method
-        this.props.registerUser(newUser);
+        this.props.registerUser(newUser, this.props.history);
     }
 
   render() {
       const {errors} = this.state;
-      const { user } = this.props.auth;
     return (
       <div>
         <div className="register">
-        {user.name ? user.name: "true"}
             <div className="container">
             <div className="row">
                 <div className="col-md-8 m-auto">
@@ -97,9 +105,10 @@ class Register extends Component {
 
 
 // Any property you have in component, you should map it to PropTypes
-Register.PropTypes = {
+Register.propTypes = {
     registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 }
 
 // getting auth state from auth reducer, (see index.js)
@@ -107,9 +116,10 @@ const mapStateToProps = (state, props) => {
     // console.log({state})
     // state.auth is coming from root reducer (inside combineReducer method)
     return {
-      auth: state.auth
+      auth: state.auth,
+      errors: state.errors
     };
   };
 
 
-export default connect(mapStateToProps, {registerUser:registerUser})(Register);
+export default connect(mapStateToProps, {registerUser:registerUser})(withRouter(Register));

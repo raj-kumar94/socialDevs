@@ -1,3 +1,4 @@
+import { GET_ERRROS } from '../actions/types';
 
 const initialState = {
     isAuthenticated: false,
@@ -6,6 +7,8 @@ const initialState = {
 
 let authReducer = (state = initialState, action) => {
     switch(action.type) {
+        case GET_ERRROS:
+            return action.payload;
         default:
             return state;
     }
