@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import registerUser from '../../actions/authActions';
+import {registerUser} from '../../actions/authActions';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -17,7 +17,14 @@ class Register extends Component {
     onChangeHandler = this.onChangeHandler.bind(this);
     onSubmit = this.onSubmit.bind(this);
 
-    // lifecycle method
+    // lifecycle methods
+
+    componentDidMount() {
+        if(this.props.auth.isAuthenticated) {
+            this.props.history.push('/dashboard');
+        }
+    }
+    
     componentWillReceiveProps(nextProps) {
         if(nextProps.errors) {
             this.setState({

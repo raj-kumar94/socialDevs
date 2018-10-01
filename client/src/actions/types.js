@@ -1,1 +1,2 @@
 export const GET_ERRROS = 'GET_ERRROS';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
