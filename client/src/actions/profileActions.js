@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRROS } from './types';
+import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRROS, SET_CURRENT_USER } from './types';
 
 
 // get current profle
@@ -48,4 +48,52 @@ export const clearCurrentProfile = () => {
     return {
         type: CLEAR_CURRENT_PROFILE
     }
+}
+
+
+// Delete account and profile
+export const deleteAccount = () => dispatch => {
+    if(window.confirm('Are you sure? This will peramanently delete your account.')) {
+        axios.delete('/api/profile')
+        .then(res => {
+            dispatch({
+                type: SET_CURRENT_USER,
+                payload: {}
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRROS,
+                payload: err.response.data
+            });
+        })
+    }
+}
+
+// Add experience
+export const addExperience = (expData, history) => dispatch => {
+    axios.post('/api/profile/experience', expData)
+    .then(res => {
+        history.push('/dashboard');
+    })
+    .catch(err => {
+        dispatch({
+            type: GET_ERRROS,
+            payload: err.response.data
+        });
+    })
+}
+
+// Add experience
+export const addEducation = (eduData, history) => dispatch => {
+    axios.post('/api/profile/education', eduData)
+    .then(res => {
+        history.push('/dashboard');
+    })
+    .catch(err => {
+        dispatch({
+            type: GET_ERRROS,
+            payload: err.response.data
+        });
+    })
 }
