@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRROS, SET_CURRENT_USER } from './types';
+import { GET_PROFILE, GET_PROFILES, PROFILE_LOADING, CLEAR_CURRENT_PROFILE, GET_ERRROS, SET_CURRENT_USER } from './types';
 
 
-// get current profle
+// get current profile
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
     axios.get('/api/profile')
@@ -16,6 +16,24 @@ export const getCurrentProfile = () => dispatch => {
         dispatch({
             type: GET_PROFILE,
             payload: {} 
+        });
+    });
+}
+
+// get profile by handle
+export const getProfileByHandle = (handle) => dispatch => {
+    dispatch(setProfileLoading());
+    axios.get(`/api/profile/handle/${handle}`)
+    .then(res => {
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data
+        });
+    })
+    .catch(err => {
+        dispatch({
+            type: GET_PROFILE,
+            payload: null
         });
     });
 }
@@ -125,6 +143,25 @@ export const deleteEducation = (id) => dispatch => {
         dispatch({
             type: GET_ERRROS,
             payload: err.response.data
+        });
+    });
+}
+
+
+// get all profle
+export const getProfiles = () => dispatch => {
+    dispatch(setProfileLoading());
+    axios.get('/api/profile/all')
+    .then(res => {
+        dispatch({
+            type: GET_PROFILES,
+            payload: res.data
+        });
+    })
+    .catch(err => {
+        dispatch({
+            type: GET_PROFILES,
+            payload: null 
         });
     });
 }
