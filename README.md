@@ -1,3 +1,18 @@
+## creating react app
+
+```
+create-react-app client
+```
+
+## add a proxy to package.json
+
+```
+"proxy": "http://localhost:8000"
+```
+
+
+## scripts (package.json --> client)
+
 ```
 "scripts": {
     "client-install": "npm install --prefix client",
